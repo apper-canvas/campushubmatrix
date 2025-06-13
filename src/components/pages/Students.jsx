@@ -179,9 +179,9 @@ const handleRowClick = (student) => {
     // TODO: Implement student detail view or edit functionality
   };
 
-  const columns = [
+const columns = [
     {
-      key: 'name',
+      key: 'Name',
       header: 'Name',
       render: (value, row) => (
         <div>
@@ -223,11 +223,6 @@ const handleRowClick = (student) => {
           {value}
         </span>
       )
-    },
-    {
-      key: 'enrolledCourses',
-      header: 'Courses',
-      render: (value) => `${value.length} enrolled`
     }
   ];
 

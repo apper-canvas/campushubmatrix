@@ -181,6 +181,7 @@ const Library = () => {
   };
 
 const getColumns = () => {
+const getColumns = () => {
     switch (activeTab) {
       case 'books':
         return [
@@ -200,9 +201,9 @@ const getColumns = () => {
         ];
       case 'issues':
         return [
-          { key: 'bookTitle', header: 'Book' },
-          { key: 'studentName', header: 'Student' },
-          { key: 'issueDate', header: 'Issue Date', render: (value) => {
+          { key: 'book_title', header: 'Book' },
+          { key: 'student_name', header: 'Student' },
+          { key: 'issue_date', header: 'Issue Date', render: (value) => {
             if (!value) return 'No date';
             try {
               const date = new Date(value);
@@ -211,7 +212,7 @@ const getColumns = () => {
               return 'Invalid date';
             }
           }},
-          { key: 'dueDate', header: 'Due Date', render: (value) => {
+          { key: 'due_date', header: 'Due Date', render: (value) => {
             if (!value) return 'No date';
             try {
               const date = new Date(value);
@@ -232,9 +233,9 @@ const getColumns = () => {
         ];
       case 'returns':
         return [
-          { key: 'bookTitle', header: 'Book' },
-          { key: 'studentName', header: 'Student' },
-          { key: 'returnDate', header: 'Return Date', render: (value) => {
+          { key: 'book_title', header: 'Book' },
+          { key: 'student_name', header: 'Student' },
+          { key: 'return_date', header: 'Return Date', render: (value) => {
             if (!value) return 'No date';
             try {
               const date = new Date(value);
@@ -243,15 +244,15 @@ const getColumns = () => {
               return 'Invalid date';
             }
           }},
-          { key: 'daysLate', header: 'Days Late' },
-          { key: 'fineAmount', header: 'Fine', render: (value) => value > 0 ? `$${value}` : '-' }
+          { key: 'days_late', header: 'Days Late' },
+          { key: 'fine_amount', header: 'Fine', render: (value) => value > 0 ? `$${value}` : '-' }
         ];
       case 'fines':
         return [
-          { key: 'studentName', header: 'Student' },
+          { key: 'student_name', header: 'Student' },
           { key: 'reason', header: 'Reason' },
           { key: 'amount', header: 'Amount', render: (value) => `$${value || 0}` },
-          { key: 'dueDate', header: 'Due Date', render: (value) => {
+          { key: 'due_date', header: 'Due Date', render: (value) => {
             if (!value) return 'No date';
             try {
               const date = new Date(value);
