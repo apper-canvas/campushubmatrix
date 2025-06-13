@@ -225,10 +225,9 @@ key: 'enrollment_count',
             <DataTable
               columns={columns}
               data={filteredCourses}
-              onRowClick={handleRowClick}
+onRowClick={handleRowClick}
             />
           )}
-)}
         </div>
         {/* Add Course Modal */}
         {showAddModal && (
@@ -261,7 +260,6 @@ const [formData, setFormData] = useState({
     schedule_time: ''
   });
 const [loading, setLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -282,13 +280,38 @@ const handleInputChange = (e) => {
         ? prev.schedule_days.filter(d => d !== day)
         : [...prev.schedule_days, day]
     }));
+};
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Course name is required';
+    }
+    if (!formData.code.trim()) {
+      newErrors.code = 'Course code is required';
+    }
+    if (!formData.instructor.trim()) {
+      newErrors.instructor = 'Instructor is required';
+    }
+    if (!formData.room.trim()) {
+      newErrors.room = 'Room is required';
+    }
+    if (!formData.capacity || formData.capacity < 1) {
+      newErrors.capacity = 'Valid capacity is required';
+    }
+    if (!formData.schedule_time.trim()) {
+      newErrors.time = 'Schedule time is required';
+    }
+    if (formData.schedule_days.length === 0) {
+      newErrors.days = 'At least one schedule day is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-const handleSubmit = async (e) => {
-
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
 
     setLoading(true);
     try {
@@ -442,7 +465,6 @@ const handleSubmit = async (e) => {
                 <label className="block text-sm font-medium text-surface-700 mb-1">
                   Schedule Time *
                 </label>
-                <input
 <input
                   type="text"
                   name="schedule_time"
