@@ -14,6 +14,7 @@ const Courses = () => {
   const [filteredCourses, setFilteredCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     loadCourses();
@@ -165,10 +166,12 @@ const Courses = () => {
               Manage courses, schedules, and enrollment
             </p>
           </div>
-          <Button icon="BookPlus">
+<Button 
+            icon="BookPlus"
+            onClick={() => setShowAddModal(true)}
+          >
             Add Course
           </Button>
-        </div>
 
         {/* Search */}
         <div className="bg-white rounded-lg shadow-sm border border-surface-200 p-6">
@@ -225,10 +228,302 @@ const Courses = () => {
               onRowClick={handleRowClick}
             />
           )}
+)}
         </div>
+
+        {/* Add Course Modal */}
+        {showAddModal && (
+          <AddCourseModal
+            isOpen={showAddModal}
+            onClose={() => setShowAddModal(false)}
+            onSuccess={(newCourse) => {
+              setCourses(prev => [...prev, newCourse]);
+              setFilteredCourses(prev => [...prev, newCourse]);
+              setShowAddModal(false);
+              toast.success('Course created successfully!');
+            }}
+          />
+        )}
       </motion.div>
     </div>
   );
 };
 
-export default Courses;
+// Add Course Modal Component
+const AddCourseModal = ({ isOpen, onClose, onSuccess }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    code: '',
+    instructor: '',
+    description: '',
+    capacity: '',
+    room: '',
+    schedule: {
+      days: [],
+      time: ''
+    }
+  });
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name.startsWith('schedule.')) {
+      const scheduleField = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        schedule: { ...prev.schedule, [scheduleField]: value }
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+    
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleDayToggle = (day) => {
+    setFormData(prev => ({
+      ...prev,
+      schedule: {
+        ...prev.schedule,
+        days: prev.schedule.days.includes(day)
+          ? prev.schedule.days.filter(d => d !== day)
+          : [...prev.schedule.days, day]
+      }
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'Course name is required';
+    if (!formData.code.trim()) newErrors.code = 'Course code is required';
+    if (!formData.instructor.trim()) newErrors.instructor = 'Instructor is required';
+    if (!formData.capacity || formData.capacity < 1) newErrors.capacity = 'Valid capacity is required';
+    if (!formData.room.trim()) newErrors.room = 'Room is required';
+    if (formData.schedule.days.length === 0) newErrors.days = 'At least one day must be selected';
+    if (!formData.schedule.time) newErrors.time = 'Schedule time is required';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    setLoading(true);
+    try {
+      const courseData = {
+        ...formData,
+        capacity: parseInt(formData.capacity),
+        credits: 3,
+        semester: 'Spring 2024'
+      };
+      
+      const newCourse = await courseService.create(courseData);
+      onSuccess(newCourse);
+    } catch (error) {
+      toast.error('Failed to create course');
+      console.error('Course creation error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-heading font-semibold text-surface-900">
+              Add New Course
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-surface-400 hover:text-surface-600 transition-colors"
+            >
+              <ApperIcon name="X" className="w-5 h-5" />
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-surface-700 mb-1">
+                  Course Name *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className={`w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                    errors.name ? 'border-error' : ''
+                  }`}
+                  placeholder="e.g., Introduction to Computer Science"
+                />
+                {errors.name && <p className="text-error text-sm mt-1">{errors.name}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-surface-700 mb-1">
+                  Course Code *
+                </label>
+                <input
+                  type="text"
+                  name="code"
+                  value={formData.code}
+                  onChange={handleInputChange}
+                  className={`w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                    errors.code ? 'border-error' : ''
+                  }`}
+                  placeholder="e.g., CS101"
+                />
+                {errors.code && <p className="text-error text-sm mt-1">{errors.code}</p>}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-surface-700 mb-1">
+                  Instructor *
+                </label>
+                <input
+                  type="text"
+                  name="instructor"
+                  value={formData.instructor}
+                  onChange={handleInputChange}
+                  className={`w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                    errors.instructor ? 'border-error' : ''
+                  }`}
+                  placeholder="e.g., Dr. Jane Smith"
+                />
+                {errors.instructor && <p className="text-error text-sm mt-1">{errors.instructor}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-surface-700 mb-1">
+                  Room *
+                </label>
+                <input
+                  type="text"
+                  name="room"
+                  value={formData.room}
+                  onChange={handleInputChange}
+                  className={`w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                    errors.room ? 'border-error' : ''
+                  }`}
+                  placeholder="e.g., Room 101"
+                />
+                {errors.room && <p className="text-error text-sm mt-1">{errors.room}</p>}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-surface-700 mb-1">
+                Description
+              </label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                rows={3}
+                className="w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="Enter course description"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-surface-700 mb-1">
+                  Capacity *
+                </label>
+                <input
+                  type="number"
+                  name="capacity"
+                  value={formData.capacity}
+                  onChange={handleInputChange}
+                  min="1"
+                  className={`w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                    errors.capacity ? 'border-error' : ''
+                  }`}
+                  placeholder="30"
+                />
+                {errors.capacity && <p className="text-error text-sm mt-1">{errors.capacity}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-surface-700 mb-1">
+                  Schedule Time *
+                </label>
+                <input
+                  type="text"
+                  name="schedule.time"
+                  value={formData.schedule.time}
+                  onChange={handleInputChange}
+                  className={`w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                    errors.time ? 'border-error' : ''
+                  }`}
+                  placeholder="e.g., 9:00 AM - 10:30 AM"
+                />
+                {errors.time && <p className="text-error text-sm mt-1">{errors.time}</p>}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-surface-700 mb-2">
+                Schedule Days *
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {weekDays.map(day => (
+                  <button
+                    key={day}
+                    type="button"
+                    onClick={() => handleDayToggle(day)}
+                    className={`px-3 py-1 text-sm rounded-lg border transition-colors ${
+                      formData.schedule.days.includes(day)
+                        ? 'bg-primary text-white border-primary'
+                        : 'bg-white text-surface-700 border-surface-200 hover:bg-surface-50'
+                    }`}
+                  >
+                    {day.slice(0, 3)}
+                  </button>
+                ))}
+              </div>
+              {errors.days && <p className="text-error text-sm mt-1">{errors.days}</p>}
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-4">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={onClose}
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                loading={loading}
+                icon="BookPlus"
+              >
+                Create Course
+              </Button>
+            </div>
+          </form>
+        </div>
+      </motion.div>
+    </div>
+  );
+};

@@ -17,6 +17,7 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [view, setView] = useState('month');
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     loadEvents();
@@ -151,10 +152,12 @@ const Calendar = () => {
               Manage events, deadlines, and important dates
             </p>
           </div>
-          <Button icon="CalendarPlus">
+<Button 
+            icon="CalendarPlus"
+            onClick={() => setShowAddModal(true)}
+          >
             Add Event
           </Button>
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Calendar */}
@@ -245,11 +248,227 @@ const Calendar = () => {
                 ))}
               </div>
             </div>
+</div>
+        </div>
+
+        {/* Add Event Modal */}
+        {showAddModal && (
+          <AddEventModal
+            isOpen={showAddModal}
+            onClose={() => setShowAddModal(false)}
+            onSuccess={(newEvent) => {
+              setEvents(prev => [...prev, newEvent]);
+              setShowAddModal(false);
+              toast.success('Event created successfully!');
+            }}
+          />
+        )}
+      </motion.div>
+    </div>
+  );
+};
+
+// Add Event Modal Component
+const AddEventModal = ({ isOpen, onClose, onSuccess }) => {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    date: '',
+    time: '',
+    location: '',
+    type: 'academic'
+  });
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.title.trim()) newErrors.title = 'Title is required';
+    if (!formData.date) newErrors.date = 'Date is required';
+    if (!formData.time) newErrors.time = 'Time is required';
+    if (!formData.location.trim()) newErrors.location = 'Location is required';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    setLoading(true);
+    try {
+      const eventData = {
+        ...formData,
+        date: `${formData.date}T${formData.time}:00`,
+        status: 'scheduled'
+      };
+      
+      const newEvent = await eventService.create(eventData);
+      onSuccess(newEvent);
+    } catch (error) {
+      toast.error('Failed to create event');
+      console.error('Event creation error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-heading font-semibold text-surface-900">
+              Add New Event
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-surface-400 hover:text-surface-600 transition-colors"
+            >
+              <ApperIcon name="X" className="w-5 h-5" />
+            </button>
           </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-surface-700 mb-1">
+                Event Title *
+              </label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
+                className={`w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  errors.title ? 'border-error' : ''
+                }`}
+                placeholder="Enter event title"
+              />
+              {errors.title && <p className="text-error text-sm mt-1">{errors.title}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-surface-700 mb-1">
+                Description
+              </label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                rows={3}
+                className="w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="Enter event description"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-surface-700 mb-1">
+                  Date *
+                </label>
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleInputChange}
+                  className={`w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                    errors.date ? 'border-error' : ''
+                  }`}
+                />
+                {errors.date && <p className="text-error text-sm mt-1">{errors.date}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-surface-700 mb-1">
+                  Time *
+                </label>
+                <input
+                  type="time"
+                  name="time"
+                  value={formData.time}
+                  onChange={handleInputChange}
+                  className={`w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                    errors.time ? 'border-error' : ''
+                  }`}
+                />
+                {errors.time && <p className="text-error text-sm mt-1">{errors.time}</p>}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-surface-700 mb-1">
+                Location *
+              </label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className={`w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  errors.location ? 'border-error' : ''
+                }`}
+                placeholder="Enter event location"
+              />
+              {errors.location && <p className="text-error text-sm mt-1">{errors.location}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-surface-700 mb-1">
+                Event Type
+              </label>
+              <select
+                name="type"
+                value={formData.type}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-surface-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              >
+                <option value="academic">Academic</option>
+                <option value="social">Social</option>
+                <option value="sports">Sports</option>
+                <option value="meeting">Meeting</option>
+                <option value="deadline">Deadline</option>
+              </select>
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-4">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={onClose}
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                loading={loading}
+                icon="CalendarPlus"
+              >
+                Create Event
+              </Button>
+            </div>
+          </form>
         </div>
       </motion.div>
     </div>
   );
+};
 };
 
 export default Calendar;
