@@ -172,16 +172,14 @@ const Library = () => {
         break;
     }
 
-    if (!searchQuery) return data;
+if (!searchQuery) return data;
     return data.filter(item =>
       Object.values(item).some(value =>
         value?.toString().toLowerCase().includes(searchQuery.toLowerCase())
       )
-)
     );
   };
 
-  const getColumns = () => {
   const getColumns = () => {
     switch (activeTab) {
       case 'books':
