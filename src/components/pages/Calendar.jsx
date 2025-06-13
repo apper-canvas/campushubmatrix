@@ -151,14 +151,14 @@ const Calendar = () => {
             <p className="text-surface-600">
               Manage events, deadlines, and important dates
             </p>
-          </div>
-<Button 
+</div>
+          <Button 
             icon="CalendarPlus"
             onClick={() => setShowAddModal(true)}
           >
             Add Event
           </Button>
-
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Calendar */}
           <div className="lg:col-span-3">
@@ -247,8 +247,8 @@ const Calendar = () => {
                   </div>
                 ))}
               </div>
-            </div>
 </div>
+          </div>
         </div>
 
         {/* Add Event Modal */}
@@ -468,7 +468,6 @@ const AddEventModal = ({ isOpen, onClose, onSuccess }) => {
       </motion.div>
     </div>
   );
-};
 };
 
 export default Calendar;
