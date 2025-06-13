@@ -180,15 +180,15 @@ const Library = () => {
     );
   };
 
-  const getColumns = () => {
+const getColumns = () => {
     switch (activeTab) {
       case 'books':
         return [
-          { key: 'title', label: 'Title' },
-          { key: 'author', label: 'Author' },
-          { key: 'isbn', label: 'ISBN' },
-          { key: 'category', label: 'Category' },
-          { key: 'status', label: 'Status', render: (value) => (
+          { key: 'title', header: 'Title' },
+          { key: 'author', header: 'Author' },
+          { key: 'isbn', header: 'ISBN' },
+          { key: 'category', header: 'Category' },
+          { key: 'status', header: 'Status', render: (value) => (
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
               value === 'available' ? 'bg-success/10 text-success' :
               value === 'issued' ? 'bg-warning/10 text-warning' :
@@ -200,11 +200,11 @@ const Library = () => {
         ];
       case 'issues':
         return [
-          { key: 'bookTitle', label: 'Book' },
-          { key: 'studentName', label: 'Student' },
-          { key: 'issueDate', label: 'Issue Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
-          { key: 'dueDate', label: 'Due Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
-          { key: 'status', label: 'Status', render: (value) => (
+          { key: 'bookTitle', header: 'Book' },
+          { key: 'studentName', header: 'Student' },
+          { key: 'issueDate', header: 'Issue Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
+          { key: 'dueDate', header: 'Due Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
+          { key: 'status', header: 'Status', render: (value) => (
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
               value === 'active' ? 'bg-info/10 text-info' :
               value === 'overdue' ? 'bg-error/10 text-error' :
@@ -216,19 +216,19 @@ const Library = () => {
         ];
       case 'returns':
         return [
-          { key: 'bookTitle', label: 'Book' },
-          { key: 'studentName', label: 'Student' },
-          { key: 'returnDate', label: 'Return Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
-          { key: 'daysLate', label: 'Days Late' },
-          { key: 'fineAmount', label: 'Fine', render: (value) => value > 0 ? `$${value}` : '-' }
+          { key: 'bookTitle', header: 'Book' },
+          { key: 'studentName', header: 'Student' },
+          { key: 'returnDate', header: 'Return Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
+          { key: 'daysLate', header: 'Days Late' },
+          { key: 'fineAmount', header: 'Fine', render: (value) => value > 0 ? `$${value}` : '-' }
         ];
       case 'fines':
         return [
-          { key: 'studentName', label: 'Student' },
-          { key: 'reason', label: 'Reason' },
-          { key: 'amount', label: 'Amount', render: (value) => `$${value}` },
-          { key: 'dueDate', label: 'Due Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
-          { key: 'status', label: 'Status', render: (value) => (
+          { key: 'studentName', header: 'Student' },
+          { key: 'reason', header: 'Reason' },
+          { key: 'amount', header: 'Amount', render: (value) => `$${value}` },
+          { key: 'dueDate', header: 'Due Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
+          { key: 'status', header: 'Status', render: (value) => (
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
               value === 'paid' ? 'bg-success/10 text-success' :
               value === 'pending' ? 'bg-warning/10 text-warning' :
