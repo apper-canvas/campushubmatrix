@@ -198,46 +198,67 @@ const getColumns = () => {
             </span>
           )}
         ];
-      case 'issues':
+case 'issues':
         return [
           { key: 'bookTitle', header: 'Book' },
           { key: 'studentName', header: 'Student' },
-          { key: 'issueDate', header: 'Issue Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
-          { key: 'dueDate', header: 'Due Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
+          { key: 'issueDate', header: 'Issue Date', render: (value) => {
+            if (!value) return 'No date';
+            try {
+              const date = new Date(value);
+              return isNaN(date.getTime()) ? 'Invalid date' : format(date, 'MMM dd, yyyy');
+            } catch (error) {
+              return 'Invalid date';
+            }
+          }},
+          { key: 'dueDate', header: 'Due Date', render: (value) => {
+            if (!value) return 'No date';
+            try {
+              const date = new Date(value);
+              return isNaN(date.getTime()) ? 'Invalid date' : format(date, 'MMM dd, yyyy');
+            } catch (error) {
+              return 'Invalid date';
+            }
+          }},
           { key: 'status', header: 'Status', render: (value) => (
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-              value === 'active' ? 'bg-info/10 text-info' :
-              value === 'overdue' ? 'bg-error/10 text-error' :
-              'bg-success/10 text-success'
-            }`}>
-              {value}
-            </span>
-          )}
-        ];
-      case 'returns':
+case 'returns':
         return [
           { key: 'bookTitle', header: 'Book' },
           { key: 'studentName', header: 'Student' },
-          { key: 'returnDate', header: 'Return Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
+          { key: 'returnDate', header: 'Return Date', render: (value) => {
+            if (!value) return 'No date';
+            try {
+              const date = new Date(value);
+              return isNaN(date.getTime()) ? 'Invalid date' : format(date, 'MMM dd, yyyy');
+            } catch (error) {
+              return 'Invalid date';
+            }
+          }},
           { key: 'daysLate', header: 'Days Late' },
           { key: 'fineAmount', header: 'Fine', render: (value) => value > 0 ? `$${value}` : '-' }
-        ];
-      case 'fines':
+case 'fines':
         return [
           { key: 'studentName', header: 'Student' },
           { key: 'reason', header: 'Reason' },
-          { key: 'amount', header: 'Amount', render: (value) => `$${value}` },
-          { key: 'dueDate', header: 'Due Date', render: (value) => format(new Date(value), 'MMM dd, yyyy') },
+          { key: 'amount', header: 'Amount', render: (value) => `$${value || 0}` },
+          { key: 'dueDate', header: 'Due Date', render: (value) => {
+            if (!value) return 'No date';
+            try {
+              const date = new Date(value);
+              return isNaN(date.getTime()) ? 'Invalid date' : format(date, 'MMM dd, yyyy');
+            } catch (error) {
+              return 'Invalid date';
+            }
+          }},
           { key: 'status', header: 'Status', render: (value) => (
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
               value === 'paid' ? 'bg-success/10 text-success' :
               value === 'pending' ? 'bg-warning/10 text-warning' :
               'bg-error/10 text-error'
             }`}>
-              {value}
+              {value || 'unknown'}
             </span>
           )}
-        ];
       default:
         return [];
     }

@@ -57,17 +57,25 @@ const DataTable = ({
               <ApperIcon name="Trash2" className="w-4 h-4" />
             </button>
           )}
-        </div>
-      );
+const renderCell = (column, row, rowIndex) => {
+    const value = row?.[column.key];
+    
+    if (column.render) {
+      try {
+        return column.render(value, row, rowIndex);
+      } catch (error) {
+        console.error(`Error rendering column ${column.key}:`, error);
+        return <span className="text-error text-sm">Error</span>;
+      }
     }
-
-    return column.render ? column.render(row[column.key], row) : row[column.key];
+    
+    // Handle null/undefined values
+    if (value === null || value === undefined) {
+      return <span className="text-surface-400">-</span>;
+    }
+    
+    return value;
   };
-
-  return (
-    <div className={`bg-white rounded-lg shadow-sm border border-surface-200 overflow-hidden ${className}`}>
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-surface-200">
           <thead className="bg-surface-50">
             <tr>
               {allColumns.map((column, index) => (
@@ -87,25 +95,24 @@ const DataTable = ({
                 key={row.id || row._id || rowIndex}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: rowIndex * 0.1 }}
-                className={`hover:bg-surface-50 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`}
-                onClick={() => onRowClick && onRowClick(row)}
-              >
-                {allColumns.map((column, colIndex) => (
-                  <td 
-                    key={column.key || colIndex} 
-                    className="px-6 py-4 whitespace-nowrap text-sm text-surface-900"
-                  >
+<tbody className="bg-white divide-y divide-surface-200">
+          {data?.map((row, rowIndex) => (
+            <motion.tr
+              key={row?.id || rowIndex}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: rowIndex * 0.05 }}
+              className="hover:bg-surface-50 cursor-pointer transition-colors duration-150"
+              onClick={() => onRowClick?.(row)}
+            >
+              {allColumns.map((column, colIndex) => (
+                <td key={`${column.key}-${colIndex}`} className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-surface-900">
                     {renderCell(column, row, rowIndex)}
-                  </td>
-                ))}
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
-
+                  </div>
+                </td>
+              ))}
+            </motion.tr>
+          )) || []}
+        </tbody>
 export default DataTable;
