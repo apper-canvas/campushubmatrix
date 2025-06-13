@@ -4,6 +4,7 @@ import Courses from '@/components/pages/Courses';
 import Calendar from '@/components/pages/Calendar';
 import Communications from '@/components/pages/Communications';
 import Reports from '@/components/pages/Reports';
+import Library from '@/components/pages/Library';
 
 export const routes = {
   dashboard: {
@@ -41,12 +42,19 @@ export const routes = {
     icon: 'MessageSquare',
     component: Communications
   },
-  reports: {
+reports: {
     id: 'reports',
     label: 'Reports',
     path: '/reports',
     icon: 'BarChart3',
     component: Reports
+  },
+  library: {
+    id: 'library',
+    label: 'Library',
+    path: '/library',
+    icon: 'BookOpenCheck',
+    component: Library
   }
 };
 
