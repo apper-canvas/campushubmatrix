@@ -92,8 +92,7 @@ const Courses = () => {
       header: 'Room'
     },
     {
-{
-      key: 'enrollment_count',
+key: 'enrollment_count',
       header: 'Enrollment',
       render: (value, row) => {
         const percentage = Math.round(((value || 0) / (row.capacity || 1)) * 100);
@@ -110,9 +109,6 @@ const Courses = () => {
       }
     },
     {
-      key: 'capacity',
-      header: 'Status',
-{
       key: 'capacity',
       header: 'Status',
       render: (value, row) => {
@@ -194,7 +190,6 @@ const Courses = () => {
             <div className="text-sm text-surface-600">Total Courses</div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm border border-surface-200 p-6 text-center">
 <div className="bg-white rounded-lg shadow-sm border border-surface-200 p-6 text-center">
             <div className="text-2xl font-heading font-bold text-success mb-1">
               {courses.reduce((sum, c) => sum + (c.enrollment_count || 0), 0)}
@@ -203,7 +198,6 @@ const Courses = () => {
           </div>
           
           <div className="bg-white rounded-lg shadow-sm border border-surface-200 p-6 text-center">
-<div className="bg-white rounded-lg shadow-sm border border-surface-200 p-6 text-center">
             <div className="text-2xl font-heading font-bold text-accent mb-1">
               {Math.round((courses.reduce((sum, c) => sum + ((c.enrollment_count || 0) / (c.capacity || 1)), 0) / courses.length) * 100) || 0}%
             </div>
@@ -266,7 +260,7 @@ const [formData, setFormData] = useState({
     schedule_days: [],
     schedule_time: ''
   });
-  });
+const [loading, setLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -290,42 +284,7 @@ const handleInputChange = (e) => {
     }));
   };
 
-const handleDayToggle = (day) => {
-    setFormData(prev => ({
-      ...prev,
-      schedule_days: prev.schedule_days.includes(day)
-        ? prev.schedule_days.filter(d => d !== day)
-        : [...prev.schedule_days, day]
-    }));
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Course name is required';
-    if (!formData.code.trim()) newErrors.code = 'Course code is required';
-    if (!formData.instructor.trim()) newErrors.instructor = 'Instructor is required';
-    if (!formData.capacity || formData.capacity < 1) newErrors.capacity = 'Valid capacity is required';
-    if (!formData.room.trim()) newErrors.room = 'Room is required';
-    if (formData.schedule_days.length === 0) newErrors.days = 'At least one day must be selected';
-    if (!formData.schedule_time) newErrors.time = 'Schedule time is required';
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Course name is required';
-    if (!formData.code.trim()) newErrors.code = 'Course code is required';
-    if (!formData.instructor.trim()) newErrors.instructor = 'Instructor is required';
-    if (!formData.capacity || formData.capacity < 1) newErrors.capacity = 'Valid capacity is required';
-    if (!formData.room.trim()) newErrors.room = 'Room is required';
-    if (formData.schedule.days.length === 0) newErrors.days = 'At least one day must be selected';
-    if (!formData.schedule.time) newErrors.time = 'Schedule time is required';
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+const handleSubmit = async (e) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -495,6 +454,7 @@ const handleDayToggle = (day) => {
                   placeholder="e.g., 9:00 AM - 10:30 AM"
                 />
                 {errors.time && <p className="text-error text-sm mt-1">{errors.time}</p>}
+              </div>
             </div>
 
             <div>
@@ -516,6 +476,7 @@ const handleDayToggle = (day) => {
                     {day.slice(0, 3)}
                   </button>
                 ))}
+</div>
               {errors.days && <p className="text-error text-sm mt-1">{errors.days}</p>}
             </div>
 
