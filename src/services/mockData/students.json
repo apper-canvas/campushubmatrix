@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "name": "Sarah Johnson",
+    "email": "sarah.johnson@university.edu",
+    "program": "Computer Science",
+    "year": 3,
+    "gpa": 3.8,
+    "enrolledCourses": ["CS301", "CS302", "MATH201"],
+    "status": "Active"
+  },
+  {
+    "id": "2",
+    "name": "Michael Chen",
+    "email": "michael.chen@university.edu",
+    "program": "Engineering",
+    "year": 2,
+    "gpa": 3.6,
+    "enrolledCourses": ["ENG201", "MATH301", "PHYS201"],
+    "status": "Active"
+  },
+  {
+    "id": "3",
+    "name": "Emily Rodriguez",
+    "email": "emily.rodriguez@university.edu",
+    "program": "Business Administration",
+    "year": 4,
+    "gpa": 3.9,
+    "enrolledCourses": ["BUS401", "BUS402", "ECON301"],
+    "status": "Active"
+  },
+  {
+    "id": "4",
+    "name": "David Thompson",
+    "email": "david.thompson@university.edu",
+    "program": "Psychology",
+    "year": 1,
+    "gpa": 3.4,
+    "enrolledCourses": ["PSY101", "PSY102", "STAT101"],
+    "status": "Active"
+  },
+  {
+    "id": "5",
+    "name": "Lisa Wang",
+    "email": "lisa.wang@university.edu",
+    "program": "Biology",
+    "year": 3,
+    "gpa": 3.7,
+    "enrolledCourses": ["BIO301", "BIO302", "CHEM201"],
+    "status": "Inactive"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "title": "Spring Semester Begins",
+    "date": "2024-04-20T08:00:00Z",
+    "type": "academic",
+    "location": "Campus Wide",
+    "description": "First day of Spring 2024 semester classes"
+  },
+  {
+    "id": "2",
+    "title": "Research Symposium",
+    "date": "2024-04-25T10:00:00Z",
+    "type": "academic",
+    "location": "Student Center Ballroom",
+    "description": "Annual undergraduate and graduate research presentations"
+  },
+  {
+    "id": "3",
+    "title": "Career Fair",
+    "date": "2024-05-02T12:00:00Z",
+    "type": "career",
+    "location": "Recreation Center",
+    "description": "Meet with potential employers and explore career opportunities"
+  },
+  {
+    "id": "4",
+    "title": "Graduation Ceremony",
+    "date": "2024-05-15T15:00:00Z",
+    "type": "ceremony",
+    "location": "Main Auditorium",
+    "description": "Commencement ceremony for graduating students"
+  },
+  {
+    "id": "5",
+    "title": "Summer Session Registration",
+    "date": "2024-04-30T00:00:00Z",
+    "type": "registration",
+    "location": "Online",
+    "description": "Registration opens for summer session courses"
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "id": "1",
+    "code": "CS301",
+    "name": "Data Structures and Algorithms",
+    "instructor": "Dr. Alan Smith",
+    "enrollmentCount": 28,
+    "capacity": 35,
+    "schedule": {
+      "days": ["Monday", "Wednesday", "Friday"],
+      "time": "10:00 AM - 11:00 AM"
+    },
+    "room": "Tech Building 201"
+  },
+  {
+    "id": "2",
+    "code": "ENG201",
+    "name": "Thermodynamics",
+    "instructor": "Prof. Maria Garcia",
+    "enrollmentCount": 32,
+    "capacity": 40,
+    "schedule": {
+      "days": ["Tuesday", "Thursday"],
+      "time": "2:00 PM - 3:30 PM"
+    },
+    "room": "Engineering Hall 105"
+  },
+  {
+    "id": "3",
+    "code": "BUS401",
+    "name": "Strategic Management",
+    "instructor": "Dr. Robert Brown",
+    "enrollmentCount": 25,
+    "capacity": 30,
+    "schedule": {
+      "days": ["Monday", "Wednesday"],
+      "time": "1:00 PM - 2:30 PM"
+    },
+    "room": "Business Center 301"
+  },
+  {
+    "id": "4",
+    "code": "PSY101",
+    "name": "Introduction to Psychology",
+    "instructor": "Dr. Jennifer Davis",
+    "enrollmentCount": 45,
+    "capacity": 50,
+    "schedule": {
+      "days": ["Tuesday", "Thursday"],
+      "time": "9:00 AM - 10:30 AM"
+    },
+    "room": "Liberal Arts 201"
+  },
+  {
+    "id": "5",
+    "code": "BIO301",
+    "name": "Molecular Biology",
+    "instructor": "Prof. Steven Wilson",
+    "enrollmentCount": 20,
+    "capacity": 25,
+    "schedule": {
+      "days": ["Monday", "Wednesday", "Friday"],
+      "time": "11:00 AM - 12:00 PM"
+    },
+    "room": "Science Building 305"
+  }
+]

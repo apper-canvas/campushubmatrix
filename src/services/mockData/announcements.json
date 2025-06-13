@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "title": "Fall Semester Registration Opens",
+    "content": "Registration for Fall 2024 semester will begin on April 15th. Please check with your academic advisor before registering for courses.",
+    "priority": "high",
+    "audience": "all",
+    "timestamp": "2024-03-15T10:00:00Z",
+    "author": "Registrar Office"
+  },
+  {
+    "id": "2",
+    "title": "Library Extended Hours During Finals",
+    "content": "The main library will be open 24/7 during the final exam period (May 1-15). Additional study spaces will be available in the student center.",
+    "priority": "medium",
+    "audience": "students",
+    "timestamp": "2024-03-10T14:30:00Z",
+    "author": "Library Services"
+  },
+  {
+    "id": "3",
+    "title": "Campus WiFi Maintenance",
+    "content": "Network maintenance will occur this Sunday from 2:00 AM to 6:00 AM. Internet services may be intermittent during this time.",
+    "priority": "low",
+    "audience": "all",
+    "timestamp": "2024-03-08T09:15:00Z",
+    "author": "IT Department"
+  },
+  {
+    "id": "4",
+    "title": "Faculty Development Workshop",
+    "content": "Join us for a workshop on innovative teaching methods. Registration required. Lunch will be provided.",
+    "priority": "medium",
+    "audience": "faculty",
+    "timestamp": "2024-03-05T16:00:00Z",
+    "author": "Academic Affairs"
+  }
+]
