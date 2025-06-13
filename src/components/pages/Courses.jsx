@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import SearchBar from '../molecules/SearchBar';
-import DataTable from '../molecules/DataTable';
-import Button from '../atoms/Button';
-import SkeletonLoader from '../atoms/SkeletonLoader';
-import ErrorState from '../atoms/ErrorState';
-import EmptyState from '../atoms/EmptyState';
+import SearchBar from '@/components/molecules/SearchBar';
+import DataTable from '@/components/molecules/DataTable';
+import Button from '@/components/atoms/Button';
+import SkeletonLoader from '@/components/atoms/SkeletonLoader';
+import ErrorState from '@/components/atoms/ErrorState';
+import EmptyState from '@/components/atoms/EmptyState';
+import ApperIcon from '@/components/ApperIcon';
 import { courseService } from '@/services';
-
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [filteredCourses, setFilteredCourses] = useState([]);
@@ -172,7 +172,7 @@ const Courses = () => {
           >
             Add Course
           </Button>
-
+        </div>
         {/* Search */}
         <div className="bg-white rounded-lg shadow-sm border border-surface-200 p-6">
           <SearchBar
@@ -230,7 +230,6 @@ const Courses = () => {
           )}
 )}
         </div>
-
         {/* Add Course Modal */}
         {showAddModal && (
           <AddCourseModal
