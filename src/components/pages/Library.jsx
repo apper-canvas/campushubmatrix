@@ -198,7 +198,7 @@ const getColumns = () => {
             </span>
           )}
         ];
-case 'issues':
+      case 'issues':
         return [
           { key: 'bookTitle', header: 'Book' },
           { key: 'studentName', header: 'Student' },
@@ -221,7 +221,16 @@ case 'issues':
             }
           }},
           { key: 'status', header: 'Status', render: (value) => (
-case 'returns':
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+              value === 'active' ? 'bg-success/10 text-success' :
+              value === 'overdue' ? 'bg-error/10 text-error' :
+              'bg-surface/10 text-surface'
+            }`}>
+              {value || 'unknown'}
+            </span>
+          )}
+        ];
+      case 'returns':
         return [
           { key: 'bookTitle', header: 'Book' },
           { key: 'studentName', header: 'Student' },
@@ -236,7 +245,8 @@ case 'returns':
           }},
           { key: 'daysLate', header: 'Days Late' },
           { key: 'fineAmount', header: 'Fine', render: (value) => value > 0 ? `$${value}` : '-' }
-case 'fines':
+        ];
+      case 'fines':
         return [
           { key: 'studentName', header: 'Student' },
           { key: 'reason', header: 'Reason' },
@@ -259,6 +269,7 @@ case 'fines':
               {value || 'unknown'}
             </span>
           )}
+        ];
       default:
         return [];
     }
