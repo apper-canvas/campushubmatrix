@@ -177,10 +177,11 @@ const Library = () => {
       Object.values(item).some(value =>
         value?.toString().toLowerCase().includes(searchQuery.toLowerCase())
       )
+)
     );
   };
-};
 
+  const getColumns = () => {
   const getColumns = () => {
     switch (activeTab) {
       case 'books':
