@@ -179,9 +179,9 @@ const Library = () => {
       )
     );
   };
+};
 
-const getColumns = () => {
-const getColumns = () => {
+  const getColumns = () => {
     switch (activeTab) {
       case 'books':
         return [
