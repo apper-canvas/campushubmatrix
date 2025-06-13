@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import ApperIcon from '../ApperIcon';
+import ApperIcon from '@/components/ApperIcon';
 
 const DataTable = ({ 
   columns = [], 
@@ -49,7 +49,7 @@ const DataTable = ({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onDelete(row.id || row._id);
+                onDelete(row?.id || row?._id);
               }}
               className="p-1 text-surface-400 hover:text-error transition-colors"
               title="Delete"
@@ -57,7 +57,10 @@ const DataTable = ({
               <ApperIcon name="Trash2" className="w-4 h-4" />
             </button>
           )}
-const renderCell = (column, row, rowIndex) => {
+        </div>
+      );
+    }
+
     const value = row?.[column.key];
     
     if (column.render) {
@@ -76,29 +79,35 @@ const renderCell = (column, row, rowIndex) => {
     
     return value;
   };
-          <thead className="bg-surface-50">
-            <tr>
-              {allColumns.map((column, index) => (
-                <th
-                  key={column.key || index}
-                  className="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider"
-                  style={column.width ? { width: column.width } : {}}
-                >
-                  {column.header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-surface-200">
-            {data.map((row, rowIndex) => (
-              <motion.tr
-                key={row.id || row._id || rowIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-<tbody className="bg-white divide-y divide-surface-200">
+
+  if (!data || data.length === 0) {
+    return (
+      <div className="text-center py-8 text-surface-500">
+        No data available
+      </div>
+    );
+  }
+
+  return (
+    <div className={`overflow-x-auto ${className}`}>
+      <table className="min-w-full divide-y divide-surface-200">
+        <thead className="bg-surface-50">
+          <tr>
+            {allColumns.map((column, index) => (
+              <th
+                key={column.key || index}
+                className="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider"
+                style={column.width ? { width: column.width } : {}}
+              >
+                {column.header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-surface-200">
           {data?.map((row, rowIndex) => (
             <motion.tr
-              key={row?.id || rowIndex}
+              key={row?.id || row?._id || rowIndex}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: rowIndex * 0.05 }}
@@ -115,4 +124,9 @@ const renderCell = (column, row, rowIndex) => {
             </motion.tr>
           )) || []}
         </tbody>
+      </table>
+    </div>
+  );
+};
+
 export default DataTable;
