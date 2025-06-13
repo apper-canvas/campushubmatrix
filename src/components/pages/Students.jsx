@@ -174,7 +174,11 @@ const handleAddStudent = () => {
     }
   };
 
-  const handleRowClick = (student) => {
+const handleRowClick = (student) => {
+    console.log('Student clicked:', student);
+    // TODO: Implement student detail view or edit functionality
+  };
+
   const columns = [
     {
       key: 'name',
@@ -260,7 +264,7 @@ const handleAddStudent = () => {
               Manage and view student information
             </p>
           </div>
-<Button icon="UserPlus" onClick={handleAddStudent}>
+          <Button icon="UserPlus" onClick={handleAddStudent}>
             Add Student
           </Button>
         </div>
@@ -306,7 +310,7 @@ const handleAddStudent = () => {
               icon="Users"
               title="No students found"
               description="Try adjusting your search criteria or add a new student"
-actionLabel="Add Student"
+              actionLabel="Add Student"
               onAction={handleAddStudent}
             />
           ) : (
@@ -316,7 +320,7 @@ actionLabel="Add Student"
               onRowClick={handleRowClick}
             />
           )}
-</div>
+        </div>
         
         {/* Add Student Modal */}
         {showAddModal && (
@@ -495,7 +499,5 @@ actionLabel="Add Student"
     </div>
   );
 };
-
-export default Students;
 
 export default Students;
