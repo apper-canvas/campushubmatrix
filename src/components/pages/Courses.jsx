@@ -524,5 +524,7 @@ const AddCourseModal = ({ isOpen, onClose, onSuccess }) => {
         </div>
       </motion.div>
     </div>
-  );
+);
 };
+
+export default Courses;
